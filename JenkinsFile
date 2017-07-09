@@ -8,8 +8,6 @@ devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
 
-
-
 node ('master'){
 
    // Mark the code checkout 'stage'....
@@ -24,7 +22,7 @@ node ('master'){
       dir ("${WORKSPACE}/${code_repo}") {  	  	      
               git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
        }   
-}
+     }
 
    stage 'Build application and Run Unit Test'
 
@@ -34,14 +32,14 @@ node ('master'){
    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
 
-  # stage 'Build Docker image'
+  /*stage 'Build Docker image'
 
    #def image = docker.build('infinityworks/dropwizard-example:snapshot', '.')
 
-   #stage 'Acceptance Tests'
-   #image.withRun('-p 8181:8080') {c ->
-    #    sh "${mvnHome}/bin/mvn verify"
-   #}
+   stage 'Acceptance Tests'
+   image.withRun('-p 8181:8080') {c ->
+        sh "${mvnHome}/bin/mvn verify"
+   }*/
 
    /* Archive acceptance tests results */
    step([$class: 'JUnitResultArchiver', testResults: '**/target/failsafe-reports/TEST-*.xml'])
@@ -52,12 +50,12 @@ node ('master'){
 
    input "Does http://192.168.99.100:9000/dashboard/index/io.dropwizard:dropwizard-example look good?"
 
-   #stage 'Push image'
+   /*stage 'Push image'
 
    #docker.withRegistry("https://registry.infinityworks.com", "docker-registry") {
     #  //tag=sh "\$(git rev-parse --short HEAD)"
      # image.tag("latest", false)
       #image.push()
-   #}
+   #}*/
 
 }
