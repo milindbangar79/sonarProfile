@@ -1,0 +1,36 @@
+bbprotocol = 'https'
+bbURL = "bitbucket.org/agileaegon"
+
+node {
+  stage('SCM') {
+    deleteDir()
+    dir ("${WORKSPACE}") {  	  	      
+              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${config_repo}.git", branch: "${relbranch_config}"                       
+       }  
+  }
+  stage('build & SonarQube Scan') {
+    withSonarQubeEnv('Sonar') {
+      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar ' +
+          '-Dsonar     
+          '-f all/pom.xml ' +
+         #'-Dsonar.projectKey=com.huettermann:all:master ' +
+         # '-Dsonar.login=$SONAR_UN ' +
+         # '-Dsonar.password=$SONAR_PW ' +
+         # '-Dsonar.language=java ' +
+          '-Dsonar.sources=. ' +
+          '-Dsonar.tests=. ' +
+          '-Dsonar.test.inclusions=**/*Test*/** ' +
+          '-Dsonar.exclusions=**/*Test*/**'
+    } // SonarQube taskId is automatically attached to the pipeline context
+  }
+}
+ 
+// No need to occupy a node
+stage("Quality Gate") {
+  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+    if (qg.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
