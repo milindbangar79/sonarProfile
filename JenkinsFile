@@ -1,11 +1,12 @@
 /* Secrects Configuration */
-bbcredId = 'BitBucket'
+bbcredId = 'GitHub'
 nexuscredId = 'Nexus'
 jiracredId = 'JIRA'
 bbprotocol="https"
-code_repo=
+bbURL="github.com/milindbangar79/jenkins-docker-plugin.git"
 devops_repo=""
 relbranch_devops="master"
+relbranch_config="master"
 
 
 
@@ -15,18 +16,14 @@ node ('master'){
    stage 'Checkout'
    deleteDir()  
    checkoutscm()
-   currentBuild.displayName = "#${env.BUILD_NUMBER}
+   currentBuild.displayName = "#${env.BUILD_NUMBER}"
    
    
    def checkoutscm() {      
-   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${credId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
+   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${bbcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}/${code_repo}") {  	  	      
-              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${config_repo}.git", branch: "${relbranch_config}"                       
-       }
-      dir ("${WORKSPACE}/${devops_repo}") {
-          git changelog: false, credentialsId: "${bbcredId}",  poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${devops_repo}.git", branch: "${relbranch_devops}"
-     } 
-  }     
+              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
+       }   
 }
 
    stage 'Build application and Run Unit Test'
@@ -37,30 +34,30 @@ node ('master'){
    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
 
-   stage 'Build Docker image'
+  # stage 'Build Docker image'
 
-   def image = docker.build('infinityworks/dropwizard-example:snapshot', '.')
+   #def image = docker.build('infinityworks/dropwizard-example:snapshot', '.')
 
-   stage 'Acceptance Tests'
-   image.withRun('-p 8181:8080') {c ->
-        sh "${mvnHome}/bin/mvn verify"
-   }
+   #stage 'Acceptance Tests'
+   #image.withRun('-p 8181:8080') {c ->
+    #    sh "${mvnHome}/bin/mvn verify"
+   #}
 
    /* Archive acceptance tests results */
    step([$class: 'JUnitResultArchiver', testResults: '**/target/failsafe-reports/TEST-*.xml'])
 
    stage 'Run SonarQube analysis'
    sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"
-   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url=http://ec2-54-171-187-14.eu-west-1.compute.amazonaws.com:9000"
+   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url=http://192.168.99.100:9000"
 
-   input "Does http://10.42.85.36:9000/dashboard/index/io.dropwizard:dropwizard-example look good?"
+   input "Does http://192.168.99.100:9000/dashboard/index/io.dropwizard:dropwizard-example look good?"
 
-   stage 'Push image'
+   #stage 'Push image'
 
-   docker.withRegistry("https://registry.infinityworks.com", "docker-registry") {
-      //tag=sh "\$(git rev-parse --short HEAD)"
-      image.tag("latest", false)
-      image.push()
-   }
+   #docker.withRegistry("https://registry.infinityworks.com", "docker-registry") {
+    #  //tag=sh "\$(git rev-parse --short HEAD)"
+     # image.tag("latest", false)
+      #image.push()
+   #}
 
 }
