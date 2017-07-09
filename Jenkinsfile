@@ -34,10 +34,10 @@ node ('master'){
    }*/
 
    /* Archive acceptance tests results */
-   step([$class: 'JUnitResultArchiver', testResults: '**/target/failsafe-reports/TEST-*.xml'])
+   /*step([$class: 'JUnitResultArchiver', testResults: '**/target/failsafe-reports/TEST-*.xml'])*/
 
    stage 'Run SonarQube analysis'
-   sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"
+   /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
    sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url=http://192.168.99.100:9000"
 
    input "Does http://192.168.99.100:9000/dashboard/index/io.dropwizard:dropwizard-example look good?"
