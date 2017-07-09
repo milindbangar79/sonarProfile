@@ -15,15 +15,6 @@ node ('master'){
    deleteDir()  
    checkoutscm()
    currentBuild.displayName = "#${env.BUILD_NUMBER}"
-   
-   
-   def checkoutscm() {      
-   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${bbcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
-      dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
-       }   
-     }
-   }
 
    stage 'Build application and Run Unit Test'
 
@@ -59,4 +50,12 @@ node ('master'){
       #image.push()
    #}*/
 
+}
+
+def checkoutscm() {      
+   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${bbcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
+      dir ("${WORKSPACE}") {  	  	      
+              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
+       }   
+   }
 }
