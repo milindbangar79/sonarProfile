@@ -19,10 +19,11 @@ node ('master'){
    
    def checkoutscm() {      
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${bbcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
-      dir ("${WORKSPACE}/${code_repo}") {  	  	      
-              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
+      dir ("${WORKSPACE}") {  	  	      
+              git checkout credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
        }   
      }
+   }
 
    stage 'Build application and Run Unit Test'
 
