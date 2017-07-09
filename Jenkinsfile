@@ -21,9 +21,6 @@ node ('master'){
    def mvnHome = tool 'M3'
    sh "${mvnHome}/bin/mvn clean package"
 
-   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-
-
   /*stage 'Build Docker image'
 
    #def image = docker.build('infinityworks/dropwizard-example:snapshot', '.')
@@ -33,10 +30,7 @@ node ('master'){
         sh "${mvnHome}/bin/mvn verify"
    }*/
 
-   /* Archive acceptance tests results */
-   /*step([$class: 'JUnitResultArchiver', testResults: '**/target/failsafe-reports/TEST-*.xml'])*/
-
-   stage 'Run SonarQube analysis'
+   stage 'Run SonarQube Analysis'
    /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
    sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url=http://192.168.99.100:9000"
 
