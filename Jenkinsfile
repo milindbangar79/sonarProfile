@@ -1,5 +1,5 @@
 /* Secrects Configuration */
-bbcredId = 'GitHub'
+scmcredId = 'GitHub'
 nexuscredId = 'Nexus'
 jiracredId = 'JIRA'
 bbprotocol="https"
@@ -47,9 +47,9 @@ node ('master'){
 }
 
 def checkoutscm() {      
-   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${bbcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
+   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${bbcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
        }   
    }
 }
