@@ -2,8 +2,9 @@
 scmcredId = 'GitHub'
 nexuscredId = 'Nexus'
 jiracredId = 'JIRA'
-bbprotocol="https"
-bbURL="github.com/milindbangar79/jenkins-docker-plugin.git"
+sonarQubeURL='http://139.59.6.49:9000'
+bbprotocol='https'
+bbURL='github.com/milindbangar79/jenkins-docker-plugin.git'
 devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
@@ -32,13 +33,13 @@ node ('master'){
 
    stage 'Run SonarQube Analysis'
    /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
-   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url=http://192.168.99.100:9000"
+   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url="${sonarQubeURL}""
 
-   input "Does http://192.168.99.100:9000/dashboard/index/io.dropwizard:dropwizard-example look good?"
+   input "Does "${sonarQubeURL}"/dashboard/index/jenkins-docker-plugin look good?"
 
    /*stage 'Push image'
 
-   #docker.withRegistry("https://registry.infinityworks.com", "docker-registry") {
+   #docker.withRegistry("<<pass as parameter>>", "docker-registry") {
     #  //tag=sh "\$(git rev-parse --short HEAD)"
      # image.tag("latest", false)
       #image.push()
