@@ -2,7 +2,7 @@
 scmcredId = 'GitHub'
 nexuscredId = 'Nexus'
 jiracredId = 'JIRA'
-sonarQubeURL='http://139.59.6.49:9000'
+sonarQubeURL='http://34.239.251.172:9000'
 bbprotocol='https'
 bbURL='github.com/milindbangar79/jenkins-docker-plugin.git'
 devops_repo=""
