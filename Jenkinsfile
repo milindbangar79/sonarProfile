@@ -8,19 +8,33 @@ bbURL='github.com/experiencedevops/customerservice.git'
 devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
+to_emailid='milind.bangar@tcs.com'
 
 node ('master'){
 
    // Mark the code checkout 'stage'....
    stage 'Checkout'
-   deleteDir()  
-   checkoutscm()
-   currentBuild.displayName = "#${env.BUILD_NUMBER}"
+   deleteDir() 
+   try {
+       checkoutscm()
+       currentBuild.displayName="#${env.BUILD_NUMBER}"
+       currentBuild.result='SUCCESS' 
+   } catch (e) {
+      currentBuild.result = "FAILED"
+      sendMail( 'FAILED' )
+      throw e
+   }
 
    stage 'Build application and Run Unit Test'
-
-   def mvnHome = tool 'M3'
-   sh "${mvnHome}/bin/mvn clean package"
+   try {
+      def mvnHome = tool 'M3'
+      sh "${mvnHome}/bin/mvn clean package"
+      currentBuild.result='SUCCESS'
+   } catch (e) {
+      currentBuild.result = "FAILED"
+      sendMail( 'FAILED' )
+      throw e
+   }
 
   /*stage 'Build Docker image'
 
@@ -35,7 +49,7 @@ node ('master'){
    /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
    sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url='${sonarQubeURL}'"
 
-   input "Does '${sonarQubeURL}'/dashboard/index/jenkins-docker-plugin look good?"
+   /*input "Does '${sonarQubeURL}'/dashboard/index/jenkins-docker-plugin look good?"*/
 
    /*stage 'Push image'
 
@@ -56,4 +70,18 @@ def checkoutscm() {
               git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}", branch: "${relbranch_config}"                       
        }   
    }
+}
+
+def sendMail( Status ) {        
+    if ( "${Status}" == 'SUCCESS' || "${Status}" == 'UNSTABLE' )
+    {        
+        /*emailbody = readFile 'builddesc.txt'*/                        
+        currentBuild.result = "${Status}"
+    }  
+    else if ( "${Status}" == 'FAILED' )
+    {
+        emailbody = 'Deployment Failed !!! Please check attached logs.'        
+        currentBuild.result = 'FAILED'
+    }
+    emailext attachLog: true, body: "${emailbody}", compressLog: true, subject: "Build #${env.BUILD_NUMBER} - Deployment ${Status}.", to: "${to_emailid}"
 }
