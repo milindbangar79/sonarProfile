@@ -33,7 +33,8 @@ node ('master'){
 
    stage 'Run SonarQube Analysis'
    /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
-   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url="${sonarQubeURL}""
+   sh " echo ${sonarQubeURL} "
+   sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url='${sonarQubeURL}'"
 
    input "Does "${sonarQubeURL}"/dashboard/index/jenkins-docker-plugin look good?"
 
