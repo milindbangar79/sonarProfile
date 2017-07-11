@@ -45,6 +45,9 @@ node ('master'){
       #image.push()
    #}*/
 
+   stage 'Deploy to Nexus'
+    sh "${mvnHome}/bin/mvn clean deploy"
+   
 }
 
 def checkoutscm() {      
