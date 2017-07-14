@@ -12,7 +12,6 @@ devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
 to_emailid='milind.bangar@tcs.com'
-isUnix=True
 
 node ('master'){
 
@@ -32,11 +31,11 @@ node ('master'){
    stage 'Build application and Run Unit Test'
    try {
       def mvnHome = tool 'M3'
-      if (isUnix){
+      if (isUnix()){
          sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
       } else {
          bat("${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package")
-      }
+      }*/
    } catch (e) {
       currentBuild.result = "FAILED"
       sendMail( 'FAILED' )
