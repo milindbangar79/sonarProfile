@@ -145,7 +145,7 @@ def sendMail( Status ) {
 
 def uploadArtifacts() { 
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${nexuscredId}", usernameVariable: 'nexus_userid', passwordVariable: 'nexus_password']]) {
-        sh "sh ${WORKSPACE}/${devops_repo}/scripts/linux/utility/build/nexusUpload.sh ${WORKSPACE} ${constants_repo} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
+        sh "sh ${WORKSPACE}/nexusUpload.sh ${WORKSPACE} ${constants_repo} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
     }
     
 }
