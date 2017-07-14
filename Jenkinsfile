@@ -32,7 +32,7 @@ node ('master'){
    try {
       def mvnHome = tool 'M3'
       if (isUnix()){
-         sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
+         sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean install package"
       } else {
          bat("${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package")
       }
@@ -41,11 +41,6 @@ node ('master'){
       sendMail( 'FAILED' )
       throw e
    }
-   
-   stage('Results') {
-      junit '*/target/surefire-reports/TEST-.xml'
-      archive 'target/*.jar'
-     }
 
   /*stage 'Build Docker image'
 
