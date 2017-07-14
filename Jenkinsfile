@@ -25,7 +25,7 @@ node ('master'){
        currentBuild.displayName="#${env.BUILD_NUMBER}"
        currentBuild.result='SUCCESS' 
    } catch (e) {
-      currentBuild.result = "FAILED"
+      currentBuild.result='FAILED'
       sendMail( 'FAILED' )
       throw e
    }
@@ -39,7 +39,7 @@ node ('master'){
          bat("${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package")
       }
    } catch (e) {
-      currentBuild.result = "FAILED"
+      currentBuild.result='FAILED'
       sendMail( 'FAILED' )
       throw e
    }
@@ -63,7 +63,7 @@ node ('master'){
          bat("${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url='${sonarQubeURL}'")
      }
    } catch (e){
-      currentBuild.result="FAILED"
+      currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
       throw e
    }
@@ -83,7 +83,7 @@ node ('master'){
    try {
       uploadArtifacts()
    } catch(e){
-      currentBuild.Result="FAILED"
+      currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
       throw e
    }
@@ -108,7 +108,7 @@ def checkoutscm() {
    }
 }
 
-def sendMail( Status ) {        
+def sendEmail( Status ) {        
     if ( "${Status}" == 'SUCCESS' || "${Status}" == 'UNSTABLE' )
     {        
         /*emailbody = readFile 'builddesc.txt'*/  
