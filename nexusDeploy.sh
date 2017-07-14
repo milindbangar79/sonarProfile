@@ -16,7 +16,7 @@ targetFolder='target'
        groupid="com.example"
        version="${appName}-${buidNumber}"
        pkgtype="jar"
-       echo "\nPackage : ${workspace}/${target}/${appName}.${pkgtype}"
+       echo "\nPackage : ${workspace}/${targetFolder}/${appName}.${pkgtype}"
   if [[ -f ${workspace}/${targetFolder}/${appName}.${pkgtype} ]] ; then
           HTTP_CODE=$(curl -s \
             -F "r=${Deployment_Repo}" \
