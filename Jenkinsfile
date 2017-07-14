@@ -136,8 +136,8 @@ def sendEmail( Status ) {
 
 def uploadArtifacts() { 
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${nexuscredId}", usernameVariable: 'nexus_userid', passwordVariable: 'nexus_password']]) {
-       sh " sudo chmod ugo+rwx ${WORKSPACE}/${automationRepoDirectory}/nexusUpload.sh "
-       sh " ${WORKSPACE}/${automationRepoDirectory}/nexusUpload.sh ${WORKSPACE} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
+       sh "chmod ugo+rwx ${WORKSPACE}/${automationRepoDirectory}/nexusUpload.sh"
+       sh "${WORKSPACE}/${automationRepoDirectory}/nexusUpload.sh ${WORKSPACE} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
     }
     
 }
