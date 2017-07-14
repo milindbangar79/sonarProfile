@@ -86,8 +86,15 @@ node ('master'){
 
    stage 'Deploy to Nexus'
    try {
-      /*uploadArtifacts()*/
-      sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore deploy"
+         /*uploadArtifacts()*/
+      withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: mvnHome,
+        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+         mavenSettingsConfig: 'my-maven-settings'{
+            sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore deploy"
+      }
    } catch(e){
       currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
