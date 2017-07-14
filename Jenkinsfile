@@ -92,7 +92,7 @@ node ('master'){
         maven: mvnHome,
         // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
         // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
-         mavenSettingsConfig: 'my-maven-settings'{
+         mavenSettingsConfig: 'my-maven-settings'){
             sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore deploy"
       }
    } catch(e){
