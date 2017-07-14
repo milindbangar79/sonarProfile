@@ -7,8 +7,9 @@ jiracredId = 'JIRA'
 sonarQubeURL='http://34.239.251.172:9000'
 bbprotocol='https'
 bbURL='github.com'
-appRepo='milindbangar79/jenkins-docker-plugin.git'
-automationRepo='milindbangar79/sonarProfile.git'
+appRepo='github.com/milindbangar79/jenkins-docker-plugin.git'
+automationRepo='github.com/milindbangar79/sonarProfile.git'
+automationRepoDirectory='automation'
 nexusBase = 'http://34.200.232.169:8081/nexus/content/repositories'
 nexus_rest_3='http://34.200.232.169:8081/service/siesta/rest/v1/script'
 nexus_rest='http://34.200.232.169:8081/nexus/service/local/artifact/maven/content'
@@ -107,13 +108,13 @@ node ('master'){
 def checkoutscm() {      
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${appRepo}", branch: "${relbranch_config}"                       
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}${appRepo}", branch: "${relbranch_config}"                       
        }   
    }
    
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
-      dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${automationRepo}", branch: "${relbranch_config}"                       
+     dir ("${WORKSPACE}/${automationRepoDirectory}") {  	  	      
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}${automationRepo}", branch: "${relbranch_config}"                       
        }   
    }
 }
@@ -135,7 +136,7 @@ def sendEmail( Status ) {
 
 def uploadArtifacts() { 
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${nexuscredId}", usernameVariable: 'nexus_userid', passwordVariable: 'nexus_password']]) {
-        sh "sh ${WORKSPACE}/sonarProfile/nexusUpload.sh ${WORKSPACE} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
+        sh "sh ${WORKSPACE}/${automationRepoDirectory}/sonarProfile/nexusUpload.sh ${WORKSPACE} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
     }
     
 }
