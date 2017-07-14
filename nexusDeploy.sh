@@ -1,11 +1,10 @@
 #!/bin/bash
 
 workspace=$1
-constantsrepo=$2
-nexus_url_rest=$3
-nexus_user=$4
-nexus_password=$5
-buidNumber=$6
+nexus_url_rest=$2
+nexus_user=$3
+nexus_password=$4
+buidNumber=$5
 appname='HelloWorld'
 appName='helloWorld-0.0.1-SNAPSHOT'
 repository="CustomerServiceSnapshot"
