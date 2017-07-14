@@ -30,9 +30,9 @@ targetFolder='target'
             ${nexus_url_rest})      
          
           if [[ ${HTTP_CODE} == "201" ]] ; then
-             echo "Info: Package : ${appname}.${pkgtype} with Version : ${version} Uploaded successfully"
+             echo "Info: Package : ${appName}.${pkgtype} with Version : ${version} Uploaded successfully"
           else
-             echo "Error: Failed to upload Package : ${appname}.${pkgtype} with Version : ${version}. ERROR CODE : ${HTTP_CODE}"
+             echo "Error: Failed to upload Package : ${appName}.${pkgtype} with Version : ${version}. ERROR CODE : ${HTTP_CODE}"
              exit 1
           fi
   fi
