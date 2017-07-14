@@ -86,7 +86,8 @@ node ('master'){
 
    stage 'Deploy to Nexus'
    try {
-      uploadArtifacts()
+      /*uploadArtifacts()*/
+      sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore deploy"
    } catch(e){
       currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
