@@ -6,7 +6,7 @@ jiracredId = 'JIRA'
 /* Application Constants */
 sonarQubeURL='http://34.239.251.172:9000'
 bbprotocol='https'
-bbURL='github.com/experiencedevops/customerservice.git'
+bbURL='github.com/milindbangar79/jenkins-docker-plugin.git'
 nexus_rest='http://34.200.232.169:8081/service/siesta/rest/v1/script'
 devops_repo=""
 relbranch_devops="master"
