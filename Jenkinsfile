@@ -101,11 +101,7 @@ node ('master'){
 
    stage 'Deploy to Nexus'
    try {
-      if(isUnix){
-         sh "${mvnHome}/bin/mvn clean deploy"
-      } else{
-         bat("${mvnHome}/bin/mvn clean deploy")
-      }
+      uploadArtifacts()
    } catch(e){
       currentBuild.Result="FAILED"
       sendEmail( 'FAILED' )
