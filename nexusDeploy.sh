@@ -5,24 +5,27 @@ constantsrepo=$2
 nexus_url_rest=$3
 nexus_user=$4
 nexus_password=$5
-buidNumber=$9
+buidNumber=$6
+appname='HelloWorld'
+appName='helloWorld-0.0.1-SNAPSHOT'
 repository="CustomerServiceSnapshot"
+version='0.0.1-SNAPSHOT'
+Deployment_Repo='CustomerServiceSnapshot'
 
-do         
+      
     echo -e "\nInfo: Uploading package for application : ${appname}"
-    if [[ -f ${workspace}/${constantsrepo}/applications/${appname}/utility.properties ]] ; then
-       . ${workspace}/${constantsrepo}/applications/${appname}/utility.properties
-       groupid=$(echo ${group} | sed 's/"//g')
-       version="${configBranch}-${buidNumber}"
-       pkgtype="zip"
-       if [[ -f ${workspace}/buildPkg/${appname}.${pkgtype} ]] ; then
+    
+       groupid="com.example"
+       version="${appName}-${buidNumber}"
+       pkgtype="jar"
+       if [[ -f ${workspace}/${appName}.${pkgtype} ]] ; then
           HTTP_CODE=$(curl -s \
-            -F "r=${PFDeployment_Repo}" \
+            -F "r=${Deployment_Repo}" \
             -F "g=${groupid}" \
             -F "a=${appname}" \
             -F "v=${version}" \
             -F "p=${pkgtype}" \
-            -F "file=@${workspace}/buildPkg/${appname}.${pkgtype}" \
+            -F "file=@${workspace}/${appName}.${pkgtype}" \
             -u ${nexus_user}:${nexus_password} \
             -o /dev/null -w %{http_code} \
             ${nexus_url_rest})      
@@ -33,4 +36,11 @@ do
              echo "Error: Failed to upload Package : ${appname}.${pkgtype} with Version : ${version}. ERROR CODE : ${HTTP_CODE}"
              exit 1
           fi      
-done
+          
+  
+#jsonFile=$1
+
+#printf "Creating Integration API Script from $jsonFile\n\n"
+
+#curl -v -u admin:admin123 --header "Content-Type: application/json" 'http://localhost:8081/service/siesta/rest/v1/script/' -d @$jsonFile
+
