@@ -15,6 +15,7 @@ Deployment_Repo='CustomerServiceSnapshot'
        groupid="com.example"
        version="${appName}-${buidNumber}"
        pkgtype="jar"
+       echo "\nPackage : ${workspace}/${appName}.${pkgtype}"
   if [[ -f ${workspace}/${appName}.${pkgtype} ]] ; then
           HTTP_CODE=$(curl -s \
             -F "r=${Deployment_Repo}" \
