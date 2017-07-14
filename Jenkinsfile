@@ -12,6 +12,7 @@ devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
 to_emailid='milind.bangar@tcs.com'
+isUnix=True
 
 node ('master'){
 
