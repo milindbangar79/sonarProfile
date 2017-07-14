@@ -10,20 +10,21 @@ appName='helloWorld-0.0.1-SNAPSHOT'
 repository="CustomerServiceSnapshot"
 version='0.0.1-SNAPSHOT'
 Deployment_Repo='CustomerServiceSnapshot'
+targetfolder='target'
      
     echo -e "\nInfo: Uploading package for application : ${appname}"    
        groupid="com.example"
        version="${appName}-${buidNumber}"
        pkgtype="jar"
-       echo "\nPackage : ${workspace}/${appName}.${pkgtype}"
-  if [[ -f ${workspace}/${appName}.${pkgtype} ]] ; then
+       echo "\nPackage : ${workspace}/${target}/${appName}.${pkgtype}"
+  if [[ -f ${workspace}/${target}/${appName}.${pkgtype} ]] ; then
           HTTP_CODE=$(curl -s \
             -F "r=${Deployment_Repo}" \
             -F "g=${groupid}" \
             -F "a=${appname}" \
             -F "v=${version}" \
             -F "p=${pkgtype}" \
-            -F "file=@${workspace}/${appName}.${pkgtype}" \
+            -F "file=@${workspace}/${target}/${appName}.${pkgtype}" \
             -u ${nexus_user}:${nexus_password} \
             -o /dev/null -w %{http_code} \
             ${nexus_url_rest})      
