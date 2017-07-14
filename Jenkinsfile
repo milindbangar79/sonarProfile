@@ -107,13 +107,13 @@ node ('master'){
 def checkoutscm() {      
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${appRepo}", branch: "${relbranch_config}"                       
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${env.bb_userid}/${appRepo}", branch: "${relbranch_config}"                       
        }   
    }
    
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${automationRepo}", branch: "${relbranch_config}"                       
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${bbURL}/${env.bb_userid}/${automationRepo}", branch: "${relbranch_config}"                       
        }   
    }
 }
