@@ -30,7 +30,7 @@ node ('master'){
        currentBuild.result='SUCCESS' 
    } catch (e) {
       currentBuild.result='FAILED'
-      sendMail( 'FAILED' )
+      sendEmail( 'FAILED' )
       throw e
    }
 
@@ -44,7 +44,7 @@ node ('master'){
       }
    } catch (e) {
       currentBuild.result='FAILED'
-      sendMail( 'FAILED' )
+      sendEmail( 'FAILED' )
       throw e
    }
 
@@ -100,7 +100,7 @@ node ('master'){
       #image.push()
    #}*/
    
-   sendEmail ( 'SUCCESS' )
+   sendEmail( 'SUCCESS' )
    
 }
 
