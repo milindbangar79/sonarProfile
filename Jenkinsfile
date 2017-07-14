@@ -6,7 +6,7 @@ jiracredId = 'JIRA'
 /* Application Constants */
 sonarQubeURL='http://34.239.251.172:9000'
 bbprotocol='https'
-bbURL='github.com/'
+bbURL='github.com'
 appRepo='milindbangar79/jenkins-docker-plugin.git'
 automationRepo='milindbangar79/sonarProfile.git'
 nexusBase = 'http://34.200.232.169:8081/nexus/content/repositories'
