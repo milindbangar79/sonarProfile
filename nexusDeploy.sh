@@ -10,10 +10,8 @@ appName='helloWorld-0.0.1-SNAPSHOT'
 repository="CustomerServiceSnapshot"
 version='0.0.1-SNAPSHOT'
 Deployment_Repo='CustomerServiceSnapshot'
-
-      
-    echo -e "\nInfo: Uploading package for application : ${appname}"
-    
+     
+    echo -e "\nInfo: Uploading package for application : ${appname}"    
        groupid="com.example"
        version="${appName}-${buidNumber}"
        pkgtype="jar"
