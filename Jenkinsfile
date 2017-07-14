@@ -16,6 +16,8 @@ to_emailid='milind.bangar@tcs.com'
 node ('master'){
 
    // Mark the code checkout 'stage'....
+   def mvnHome = tool 'M3'
+   
    stage 'Checkout'
    deleteDir() 
    try {
@@ -30,7 +32,7 @@ node ('master'){
 
    stage 'Build application and Run Unit Test'
    try {
-      def mvnHome = tool 'M3'
+      
       if (isUnix()){
          sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean install package"
       } else {
