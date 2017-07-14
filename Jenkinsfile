@@ -1,12 +1,13 @@
 /* Secrets Configuration */
 scmcredId = 'GitHub'
-nexuscredId = 'Nexus'
+nexuscredId = 'nexus'
 jiracredId = 'JIRA'
 
 /* Application Constants */
 sonarQubeURL='http://34.239.251.172:9000'
 bbprotocol='https'
 bbURL='github.com/experiencedevops/customerservice.git'
+nexus_rest='http://34.200.232.169:8081/service/siesta/rest/v1/script'
 devops_repo=""
 relbranch_devops="master"
 relbranch_config="master"
@@ -144,4 +145,11 @@ def sendMail( Status ) {
         currentBuild.result = 'FAILED'
     }
     emailext attachLog: true, body: "${emailbody}", compressLog: true, subject: "Build #${env.BUILD_NUMBER} - Deployment ${Status}.", to: "${to_emailid}"
+}
+
+def uploadArtifacts() { 
+    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${nexuscredId}", usernameVariable: 'nexus_userid', passwordVariable: 'nexus_password']]) {
+        sh "sh ${WORKSPACE}/${devops_repo}/scripts/linux/utility/build/nexusUpload.sh ${WORKSPACE} ${constants_repo} ${nexus_rest} ${nexus_userid} ${nexus_password} ${BUILD_NUMBER}"
+    }
+    
 }
