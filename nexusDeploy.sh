@@ -15,7 +15,7 @@ Deployment_Repo='CustomerServiceSnapshot'
        groupid="com.example"
        version="${appName}-${buidNumber}"
        pkgtype="jar"
-       if [[ -f ${workspace}/${appName}.${pkgtype} ]] ; then
+  if [[ -f ${workspace}/${appName}.${pkgtype} ]] ; then
           HTTP_CODE=$(curl -s \
             -F "r=${Deployment_Repo}" \
             -F "g=${groupid}" \
@@ -33,5 +33,5 @@ Deployment_Repo='CustomerServiceSnapshot'
              echo "Error: Failed to upload Package : ${appname}.${pkgtype} with Version : ${version}. ERROR CODE : ${HTTP_CODE}"
              exit 1
           fi
-
+  fi
             
