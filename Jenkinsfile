@@ -35,7 +35,7 @@ node ('master'){
       throw e
    }
 
-   stage 'Build application and Run Unit Test'
+  /* stage 'Build application and Run Unit Test'
    try {
       
       if (isUnix()){
@@ -47,7 +47,7 @@ node ('master'){
       currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
       throw e
-   }
+   }*/
 
   /*stage 'Build Docker image'
 
@@ -58,20 +58,20 @@ node ('master'){
         sh "${mvnHome}/bin/mvn verify"
    }*/
    
-   stage 'Run SonarQube Analysis'
+   /*stage 'Run SonarQube Analysis'
    try {
      if (isUnix()) { 
-         /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
+         /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"
          sh "${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url='${sonarQubeURL}'"
      }else{
-         /*bat("${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test")*/
+         /*bat("${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test")
          bat("${mvnHome}/bin/mvn package sonar:sonar -Dsonar.host.url='${sonarQubeURL}'")
      }
    } catch (e){
       currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
       throw e
-   }
+   }*/
    
    /*stage("SonarQube Quality Gate") { 
         timeout(time: 1, unit: 'HOURS') { 
@@ -93,7 +93,7 @@ node ('master'){
         // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
         // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
          mavenSettingsConfig: 'global-config'){
-            sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore deploy"
+            sh "${mvnHome}/bin/mvn -X -Dmaven.test.failure.ignore deploy"
       }
    } catch(e){
       currentBuild.result='FAILED'
