@@ -35,7 +35,7 @@ node ('master'){
       throw e
    }
 
-  /* stage 'Build application and Run Unit Test'*/
+  stage 'Build application and Run Unit Test'
    try {
       
       if (isUnix()){
@@ -58,7 +58,7 @@ node ('master'){
         sh "${mvnHome}/bin/mvn verify"
    }*/
    
-   /*stage 'Run SonarQube Analysis'*/
+   stage 'Run SonarQube Analysis'
    try {
      if (isUnix()) { 
          /*sh "${mvnHome}/bin/mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test"*/
