@@ -86,7 +86,14 @@ node ('master'){
 
    stage 'Deploy to Nexus'
    try {
-         /*uploadArtifacts()*/
+      
+      // install Maven and add it to the path
+      env.PATH = "${tool 'M3'}/bin:${env.PATH}"
+      configFileProvider([configFile(fileId: 'global-config', variable: 'MAVEN_SETTINGS')]) {
+              sh "mvn help:effective-settings"
+              sh 'mvn -s $MAVEN_SETTINGS deploy'
+        }
+         /*uploadArtifacts()
       withMaven(
         // Maven installation declared in the Jenkins "Global Tool Configuration"
         maven: 'M3',
@@ -95,7 +102,7 @@ node ('master'){
          mavenSettingsConfig: 'global-config'){
             sh "{mvnHome}/bin/mvn help:effective-settings"
             sh "${mvnHome}/bin/mvn -X -Dmaven.test.failure.ignore deploy"
-      }
+      }*/
    } catch(e){
       currentBuild.result='FAILED'
       sendEmail( 'FAILED' )
